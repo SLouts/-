@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>衍天宗互動地圖</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map', {
+      crs: L.CRS.Simple,
+      minZoom: -1,
+      maxZoom: 4
+    });
+
+    const imageUrl = '2-區域圖.png';
+    const imageWidth = 2000;
+    const imageHeight = 1414;
+    const imageBounds = [[0, 0], [imageHeight, imageWidth]];
+
+    L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    map.fitBounds(imageBounds);
+
+    const layerResidence = L.layerGroup();
+    const layerShrines = L.layerGroup();
+    const layerSchools = L.layerGroup();
+    const layerAdmin = L.layerGroup();
+    const layerSpecial = L.layerGroup();
+
+    L.marker([400, 300]).bindPopup("<b>榭天櫳</b><br>小商店街，偏寒冷乾燥，少有居民居住，都是為了做生意才會駐紮於此。亦有酒樓。").addTo(layerResidence);
+    L.marker([600, 500]).bindPopup("<b>齊天松</b><br>少數居民祭拜的神廟，修士修煉前常至此祈願。").addTo(layerShrines);
+    L.marker([1000, 800]).bindPopup("<b>正頻</b><br>衍天三大教學樓之一，非弟子需申請才能進入。").addTo(layerSchools);
+    L.marker([1250, 950]).bindPopup("<b>洲影閣</b><br>衍天宗辦公所，庭院與海景兼備的高級行政地。").addTo(layerAdmin);
+    L.marker([800, 1300]).bindPopup("<b>神墟</b><br>過去的神廟遺址，現為衍天宗的大型藏書閣。").addTo(layerSpecial);
+
+    const overlayMaps = {
+      "🏘️ 居住／集會": layerResidence,
+      "🏛️ 神廟區": layerShrines,
+      "🎓 教學設施": layerSchools,
+      "🧙‍♂️ 管理機構": layerAdmin,
+      "⚔️ 特殊場域": layerSpecial
+    };
+
+    L.control.layers(null, overlayMaps).addTo(map);
+
+    layerResidence.addTo(map);
+    layerShrines.addTo(map);
+    layerSchools.addTo(map);
+    layerAdmin.addTo(map);
+    layerSpecial.addTo(map);
+  </script>
+</body>
+</html>
